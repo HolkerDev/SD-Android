@@ -7,13 +7,12 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
 import com.holker.smart.R
 import com.holker.smart.databinding.ActivityStartBinding
-import com.holker.smart.databinding.ActivityStartBindingImpl
 import com.holker.smart.di.Injectable
 import com.holker.smart.di.ViewModelInjectionFactory
 import javax.inject.Inject
 
 class StartActivity : AppCompatActivity(), Injectable {
-    private val TAG = StartActivity::class.java.name
+    private val TAG = StartActivity::class.simpleName
 
     private lateinit var binding: ActivityStartBinding
     private lateinit var viewModel: StartVM
@@ -33,11 +32,7 @@ class StartActivity : AppCompatActivity(), Injectable {
             getString(R.string.preference_key), Context.MODE_PRIVATE
         )
         val token = sharedPreference.getString("token", "")
-        if (!token.equals("")) {
-
-        } else {
-
-        }
+        viewModel.validateToken(token!!)
     }
 
     fun initBinding() {
