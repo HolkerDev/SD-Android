@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -8,19 +9,76 @@
             type="com.holker.smart.functionalities.login.LoginVM" />
     </data>
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+    <LinearLayout xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/colorPrimaryDark"
         android:orientation="vertical"
+        android:padding="20dp"
         tools:context=".functionalities.login.LoginActivity">
 
-        <TextView
+        <ImageView
             android:layout_width="wrap_content"
+            android:layout_height="350dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/logo_transparent" />
+
+        <EditText
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="LOGIN ACTIVITY"
-            android:textColor="#ffff"
-            android:textSize="50sp" />
+            android:layout_margin="10dp"
+            android:background="@drawable/et_credentials"
+            android:drawableStart="@drawable/ic_baseline_person_24"
+            android:drawableLeft="@drawable/ic_baseline_person_24"
+            android:drawablePadding="10dp"
+            android:hint="@string/email"
+            android:padding="15dp"
+            android:text="@={viewModel.emailObservable}"
+            android:textColor="@color/white"
+            android:textColorHighlight="@color/white"
+            android:textColorHint="@color/white" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@drawable/et_credentials"
+            android:drawableStart="@drawable/ic_baseline_lock_24"
+            android:drawableLeft="@drawable/ic_baseline_lock_24"
+            android:drawablePadding="10dp"
+            android:hint="@string/password"
+            android:padding="15dp"
+            android:text="@={viewModel.passwordObservable}"
+            android:textColor="@color/white"
+            android:textColorHighlight="@color/white"
+            android:textColorHint="@color/white" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/btn_login"
+            android:onClick="@{()->viewModel.login()}"
+            android:padding="15dp"
+            android:shadowColor="@android:color/transparent"
+            android:text="@string/log_in" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/btn_signup"
+            android:onClick="@{()->viewModel.signUp()}"
+            android:padding="15dp"
+            android:shadowColor="@android:color/transparent"
+            android:text="@string/sign_up"
+            android:textColor="@color/white" />
+
     </LinearLayout>
 </layout>

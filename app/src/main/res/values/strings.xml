@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">SmartAd</string>
     <string name="preference_key">ADoISsJAO14RgA2x3f14</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="log_in">Log In</string>
+    <string name="password">Password</string>
+    <string name="email">Email</string>
 </resources>
