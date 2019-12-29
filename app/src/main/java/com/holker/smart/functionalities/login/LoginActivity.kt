@@ -20,18 +20,18 @@ import com.holker.smart.functionalities.sign_up.SignUpActivity
 import javax.inject.Inject
 
 class LoginActivity : AppCompatActivity(), Injectable {
-    private val TAG = LoginActivity::class.java.name
+    private val _TAG = LoginActivity::class.java.name
 
-    private lateinit var binding: ActivityLoginBinding
-    private lateinit var viewModel: LoginVM
-    private lateinit var sharedPref: SharedPreferences
+    private lateinit var _binding: ActivityLoginBinding
+    private lateinit var _viewModel: LoginVM
+    private lateinit var _sharedPref: SharedPreferences
 
     @Inject
     lateinit var viewModelInjectionFactory: ViewModelInjectionFactory<LoginVM>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        sharedPref = applicationContext.getSharedPreferences(
+        _sharedPref = applicationContext.getSharedPreferences(
             getString(R.string.preference_key),
             Context.MODE_PRIVATE
         )
@@ -39,10 +39,10 @@ class LoginActivity : AppCompatActivity(), Injectable {
     }
 
     fun initBinding() {
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_login)
-        viewModel = ViewModelProviders.of(this, viewModelInjectionFactory).get(LoginVM::class.java)
-        binding.viewModel = viewModel
-        viewModel.event.observe(this, Observer { event ->
+        _binding = DataBindingUtil.setContentView(this, R.layout.activity_login)
+        _viewModel = ViewModelProviders.of(this, viewModelInjectionFactory).get(LoginVM::class.java)
+        _binding.viewModel = _viewModel
+        _viewModel.event.observe(this, Observer { event ->
             when (event) {
                 is LoginState.Error -> {
                     Toast.makeText(
@@ -52,10 +52,10 @@ class LoginActivity : AppCompatActivity(), Injectable {
                     ).show()
                 }
                 is LoginState.LoginSuccess -> {
-                    Log.i(TAG, "LoginSuccess. Saving data to shared preference.")
+                    Log.i(_TAG, "LoginSuccess. Saving data to shared preference.")
                     //Save token and userDetails
                     val gson = Gson()
-                    sharedPref.edit().putString("token", event.token)
+                    _sharedPref.edit().putString("token", event.token)
                         .putString("userDetails", gson.toJson(event.userDetails)).apply()
 
                     val mainIntent = Intent(applicationContext, MainActivity::class.java)
@@ -63,12 +63,12 @@ class LoginActivity : AppCompatActivity(), Injectable {
                     finish()
                 }
                 LoginState.SignUp -> {
-                    Log.i(TAG, "SignUp. Switching to SignUp Activity.")
+                    Log.i(_TAG, "SignUp. Switching to SignUp Activity.")
                     val signUpIntent = Intent(applicationContext, SignUpActivity::class.java)
                     startActivity(signUpIntent)
                 }
                 else -> {
-                    Log.e(TAG, "Unexpected event.")
+                    Log.e(_TAG, "Unexpected event.")
                 }
             }
         })

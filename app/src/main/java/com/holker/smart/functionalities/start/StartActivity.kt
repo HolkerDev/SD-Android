@@ -20,11 +20,11 @@ import com.holker.smart.functionalities.main.MainActivity
 import javax.inject.Inject
 
 class StartActivity : AppCompatActivity(), Injectable {
-    private val TAG = StartActivity::class.java.name
+    private val _TAG = StartActivity::class.java.name
 
-    private lateinit var binding: ActivityStartBinding
-    private lateinit var viewModel: StartVM
-    private lateinit var sharedPref: SharedPreferences
+    private lateinit var _binding: ActivityStartBinding
+    private lateinit var _viewModel: StartVM
+    private lateinit var _sharedPref: SharedPreferences
 
     @Inject
     lateinit var viewModelInjectionFactory: ViewModelInjectionFactory<StartVM>
@@ -37,18 +37,18 @@ class StartActivity : AppCompatActivity(), Injectable {
     override fun onStart() {
         super.onStart()
 
-        sharedPref = applicationContext.getSharedPreferences(
+        _sharedPref = applicationContext.getSharedPreferences(
             getString(R.string.preference_key), Context.MODE_PRIVATE
         )
-        val token = sharedPref.getString("token", "")
-        viewModel.validateToken(token!!)
+        val token = _sharedPref.getString("token", "")
+        _viewModel.validateToken(token!!)
     }
 
     fun initBinding() {
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_start)
-        viewModel = ViewModelProviders.of(this, viewModelInjectionFactory).get(StartVM::class.java)
-        binding.viewModel = viewModel
-        viewModel.event.observe(this, Observer { event ->
+        _binding = DataBindingUtil.setContentView(this, R.layout.activity_start)
+        _viewModel = ViewModelProviders.of(this, viewModelInjectionFactory).get(StartVM::class.java)
+        _binding.viewModel = _viewModel
+        _viewModel.event.observe(this, Observer { event ->
             when (event) {
                 StartState.Login -> {
                     val loginIntent = Intent(applicationContext, LoginActivity::class.java)
@@ -61,7 +61,7 @@ class StartActivity : AppCompatActivity(), Injectable {
                 }
                 is StartState.Error -> {
                     Log.e(
-                        TAG,
+                        _TAG,
                         "Received error message from VM while checking token : ${event.errorMessage}"
                     )
                     Toast.makeText(
@@ -73,14 +73,14 @@ class StartActivity : AppCompatActivity(), Injectable {
                 is StartState.TokenSuccess -> {
                     //Put user details to sharedPref to use in future
                     val gson = Gson()
-                    sharedPref.edit().putString("userDetails", gson.toJson(event.userDetails))
+                    _sharedPref.edit().putString("userDetails", gson.toJson(event.userDetails))
                         .apply()
                     val mainIntent = Intent(applicationContext, MainActivity::class.java)
                     startActivity(mainIntent)
                     finish()
                 }
                 else -> {
-                    Log.e(TAG, "Unexpected event.")
+                    Log.e(_TAG, "Unexpected event.")
                 }
             }
         })
