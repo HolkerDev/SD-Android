@@ -15,6 +15,7 @@ import com.holker.smart.R
 import com.holker.smart.databinding.ActivityStartBinding
 import com.holker.smart.di.Injectable
 import com.holker.smart.di.ViewModelInjectionFactory
+import com.holker.smart.functionalities.login.LoginActivity
 import com.holker.smart.functionalities.main.MainActivity
 import javax.inject.Inject
 
@@ -50,15 +51,19 @@ class StartActivity : AppCompatActivity(), Injectable {
         viewModel.event.observe(this, Observer { event ->
             when (event) {
                 StartState.Login -> {
-//                    val loginIntent = Intent(applicationContext, LoginActivity::class.java)
-//                    startActivity(loginIntent)
-//                    finish()
-
-                    sharedPref.edit()
-                        .putString("token", "09bba034634ca17a88a62e382156db544c598a32").apply()
-                    Log.i(TAG, "Paste 09bba034634ca17a88a62e382156db544c598a32 to sharedPref")
+                    val loginIntent = Intent(applicationContext, LoginActivity::class.java)
+                    startActivity(loginIntent)
+                    finish()
+                    // For tests
+//                    sharedPref.edit()
+//                        .putString("token", "ce8bcedc0ae3bfcfad0818eaa9b1e6ed4c131362").apply()
+//                    Log.i(TAG, "Paste 09bba034634ca17a88a62e382156db544c598a32 to sharedPref")
                 }
                 is StartState.Error -> {
+                    Log.e(
+                        TAG,
+                        "Received error message from VM while checking token : ${event.errorMessage}"
+                    )
                     Toast.makeText(
                         applicationContext,
                         "Authorization error. Please try later.",

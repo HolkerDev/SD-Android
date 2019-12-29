@@ -37,10 +37,20 @@ class StartVM @Inject constructor(var service: SmartAdApiService) : ViewModel() 
                     call: Call<UserDetailedInfo>,
                     response: Response<UserDetailedInfo>
                 ) {
-                    if (response.code() == 200)
-                        event.value = StartState.TokenSuccess(response.body()!!)
-                    else
-                        Log.i(TAG, "Status code is not 200 : ${response.code()}")
+                    when (response.code()) {
+                        200 -> {
+                            Log.i(TAG, "Token is valid. Open main activity")
+                            event.value = StartState.TokenSuccess(response.body()!!)
+                        }
+                        401 -> {
+                            Log.i(TAG, "Wrong token. Open login activity")
+                            event.value = StartState.Login
+                        }
+                        else -> {
+                            Log.e(TAG, "Unhandled response code : ${response.code()}")
+                        }
+
+                    }
                 }
             })
         }

@@ -6,10 +6,11 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
 import com.holker.smart.R
 import com.holker.smart.databinding.ActivityMainBinding
+import com.holker.smart.di.Injectable
 import com.holker.smart.di.ViewModelInjectionFactory
 import javax.inject.Inject
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), Injectable {
     private val TAG = MainActivity::class.java.name
 
     private lateinit var binding: ActivityMainBinding
