@@ -49,7 +49,6 @@ class StartVM @Inject constructor(var service: SmartAdApiService) : ViewModel() 
                         else -> {
                             Log.e(TAG, "Unhandled response code : ${response.code()}")
                         }
-
                     }
                 }
             })

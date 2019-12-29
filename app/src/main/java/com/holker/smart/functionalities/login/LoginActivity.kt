@@ -1,8 +1,10 @@
 package com.holker.smart.functionalities.login
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.holker.smart.R
 import com.holker.smart.databinding.ActivityLoginBinding
@@ -28,5 +30,20 @@ class LoginActivity : AppCompatActivity(), Injectable {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_login)
         viewModel = ViewModelProviders.of(this, viewModelInjectionFactory).get(LoginVM::class.java)
         binding.viewModel = viewModel
+        viewModel.event.observe(this, Observer { event ->
+            when (event) {
+                is LoginState.Error -> {
+                    Toast.makeText(
+                        applicationContext,
+                        "Server error. Please try later.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+                is LoginState.LoginSuccess -> {
+
+                }
+
+            }
+        })
     }
 }
