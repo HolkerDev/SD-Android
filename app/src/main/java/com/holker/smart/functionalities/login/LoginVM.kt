@@ -14,7 +14,7 @@ import retrofit2.Response
 import javax.inject.Inject
 
 class LoginVM @Inject constructor(var service: SmartAdApiService) : ViewModel() {
-    private val TAG = LoginVM::class.java.name
+    private val _TAG = LoginVM::class.java.name
 
     var event = MutableLiveData<LoginState>()
 
@@ -33,21 +33,21 @@ class LoginVM @Inject constructor(var service: SmartAdApiService) : ViewModel() 
         val callCreateToken = service.postCreateToken(userTokenInfo)
         callCreateToken.enqueue(object : Callback<Token> {
             override fun onFailure(call: Call<Token>, t: Throwable) {
-                Log.e(TAG, "Error while creating token. Error : ${t.message}")
+                Log.e(_TAG, "Error while creating token. Error : ${t.message}")
                 event.value = LoginState.Error("${t.message}")
             }
 
             override fun onResponse(call: Call<Token>, response: Response<Token>) {
-                Log.i(TAG, response.message())
+                Log.i(_TAG, response.message())
                 when (response.code()) {
                     400 -> {
-                        Log.e(TAG, "Received 400 response. Wrong credentials.")
+                        Log.e(_TAG, "Received 400 response. Wrong credentials.")
                         event.value = LoginState.Error("Email or password is wrong.")
                     }
                     200 -> {
-                        Log.i(TAG, "Response 200 while creating token.")
+                        Log.i(_TAG, "Response 200 while creating token.")
                         val token = response.body()?.token!!
-                        Log.i(TAG, "Token : $token")
+                        Log.i(_TAG, "Token : $token")
                         getUserDetails(token)
                     }
                 }
@@ -59,7 +59,7 @@ class LoginVM @Inject constructor(var service: SmartAdApiService) : ViewModel() 
         val callUserDetails = service.getUserInfo("Token $token")
         callUserDetails.enqueue(object : Callback<UserDetailedInfo> {
             override fun onFailure(call: Call<UserDetailedInfo>, t: Throwable) {
-                Log.e(TAG, "Error while getting user details based on token. Error : ${t.message}")
+                Log.e(_TAG, "Error while getting user details based on token. Error : ${t.message}")
                 event.value = LoginState.Error("Server error. Please try later.")
             }
 
@@ -70,20 +70,20 @@ class LoginVM @Inject constructor(var service: SmartAdApiService) : ViewModel() 
                 when (response.code()) {
                     200 -> {
                         Log.i(
-                            TAG,
+                            _TAG,
                             "Received 200 while getting user details. Sending info to Activity"
                         )
                         event.value = LoginState.LoginSuccess(token, response.body()!!)
                     }
                     401 -> {
                         Log.i(
-                            TAG,
+                            _TAG,
                             "Wrong token while getting a user details. It's impossible, to be honest"
                         )
                         event.value = LoginState.Error("Server error. Please try again.")
                     }
                     else -> {
-                        Log.e(TAG, "Unhandled response code : ${response.code()}")
+                        Log.e(_TAG, "Unhandled response code : ${response.code()}")
                     }
                 }
             }
