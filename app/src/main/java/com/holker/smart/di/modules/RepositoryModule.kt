@@ -11,7 +11,7 @@ import javax.inject.Singleton
 
 @Module
 class RepositoryModule {
-    private val baseUrl = "127.0.0.1:8000" //TODO : Fix for local machine
+    private val baseUrl = "http://10.0.2.2:8000" //TODO : Fix for local machine
     @Provides
     @Singleton
     fun providesApiService(): SmartAdApiService {

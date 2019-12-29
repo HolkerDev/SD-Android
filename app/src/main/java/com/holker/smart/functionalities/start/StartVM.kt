@@ -30,7 +30,7 @@ class StartVM @Inject constructor(var service: SmartAdApiService) : ViewModel() 
             callUserDetails.enqueue(object : Callback<UserDetailedInfo> {
                 override fun onFailure(call: Call<UserDetailedInfo>, t: Throwable) {
                     Log.e(TAG, "Error while checking token : ${t.message}")
-                    event.value = StartState.Error("Authorization error")
+                    event.value = StartState.Error("${t.message}")
                 }
 
                 override fun onResponse(
@@ -40,7 +40,7 @@ class StartVM @Inject constructor(var service: SmartAdApiService) : ViewModel() 
                     if (response.code() == 200)
                         event.value = StartState.TokenSuccess(response.body()!!)
                     else
-                        Log.i(TAG, "Status code is not 200")
+                        Log.i(TAG, "Status code is not 200 : ${response.code()}")
                 }
             })
         }

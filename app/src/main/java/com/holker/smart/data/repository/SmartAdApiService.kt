@@ -11,12 +11,12 @@ import retrofit2.http.Header
 import retrofit2.http.POST
 
 public interface SmartAdApiService {
-    @POST("user/create/")
+    @POST("/api/user/create/")
     fun postCreateUser(@Body userCreate: CreateUserBody): Call<UserCredentials>
 
-    @POST("user/token/")
+    @POST("/api/user/token/")
     fun postCreateToken(@Body userCredentials: UserCredentials): Call<Token>
 
-    @GET("user/me/")
+    @GET("/api/user/me/")
     fun getUserInfo(@Header("Authorization") token: String): Call<UserDetailedInfo>
 }
