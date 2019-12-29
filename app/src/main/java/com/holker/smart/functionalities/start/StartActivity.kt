@@ -15,7 +15,7 @@ import com.holker.smart.functionalities.login.LoginActivity
 import javax.inject.Inject
 
 class StartActivity : AppCompatActivity(), Injectable {
-    private val TAG = StartActivity::class.java.simpleName
+    private val TAG = StartActivity::class.java.name
 
     private lateinit var binding: ActivityStartBinding
     private lateinit var viewModel: StartVM

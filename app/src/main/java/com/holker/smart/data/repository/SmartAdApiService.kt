@@ -7,6 +7,7 @@ import com.holker.smart.data.model.UserDetailedInfo
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.Header
 import retrofit2.http.POST
 
 public interface SmartAdApiService {
@@ -17,5 +18,5 @@ public interface SmartAdApiService {
     fun postCreateToken(@Body userCredentials: UserCredentials): Call<Token>
 
     @GET("user/me/")
-    fun getUserInfo(): Call<UserDetailedInfo>
+    fun getUserInfo(@Header("Authorization") token: String): Call<UserDetailedInfo>
 }

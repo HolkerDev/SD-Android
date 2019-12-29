@@ -14,7 +14,7 @@ class RepositoryModule {
     private val baseUrl = "127.0.0.1:8000" //TODO : Fix for local machine
     @Provides
     @Singleton
-    fun providesApiService(): SmartAdApiService? {
+    fun providesApiService(): SmartAdApiService {
         val retrofit: Retrofit
         val okHttpClient = OkHttpClient.Builder()
             .readTimeout(60, TimeUnit.SECONDS)
