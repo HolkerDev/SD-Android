@@ -1,6 +1,8 @@
 package com.holker.smart.functionalities.start
 
 import android.content.Context
+import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -8,10 +10,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import com.google.gson.Gson
 import com.holker.smart.R
 import com.holker.smart.databinding.ActivityStartBinding
 import com.holker.smart.di.Injectable
 import com.holker.smart.di.ViewModelInjectionFactory
+import com.holker.smart.functionalities.main.MainActivity
 import javax.inject.Inject
 
 class StartActivity : AppCompatActivity(), Injectable {
@@ -19,6 +23,7 @@ class StartActivity : AppCompatActivity(), Injectable {
 
     private lateinit var binding: ActivityStartBinding
     private lateinit var viewModel: StartVM
+    private lateinit var sharedPref: SharedPreferences
 
     @Inject
     lateinit var viewModelInjectionFactory: ViewModelInjectionFactory<StartVM>
@@ -31,10 +36,10 @@ class StartActivity : AppCompatActivity(), Injectable {
     override fun onStart() {
         super.onStart()
 
-        val sharedPreference = applicationContext.getSharedPreferences(
+        sharedPref = applicationContext.getSharedPreferences(
             getString(R.string.preference_key), Context.MODE_PRIVATE
         )
-        val token = sharedPreference.getString("token", "")
+        val token = sharedPref.getString("token", "")
         viewModel.validateToken(token!!)
     }
 
@@ -48,10 +53,8 @@ class StartActivity : AppCompatActivity(), Injectable {
 //                    val loginIntent = Intent(applicationContext, LoginActivity::class.java)
 //                    startActivity(loginIntent)
 //                    finish()
-                    val sharedPreference = applicationContext.getSharedPreferences(
-                        getString(R.string.preference_key), Context.MODE_PRIVATE
-                    )
-                    sharedPreference.edit()
+
+                    sharedPref.edit()
                         .putString("token", "09bba034634ca17a88a62e382156db544c598a32").apply()
                     Log.i(TAG, "Paste 09bba034634ca17a88a62e382156db544c598a32 to sharedPref")
                 }
@@ -63,12 +66,13 @@ class StartActivity : AppCompatActivity(), Injectable {
                     ).show()
                 }
                 is StartState.TokenSuccess -> {
-                    //TODO : Save details to sharedPref using Gson
-                    Toast.makeText(
-                        applicationContext,
-                        "OK.Email :  ${event.userDetails.email}",
-                        Toast.LENGTH_LONG
-                    ).show()
+                    //Put user details to sharedPref to use in future
+                    val gson = Gson()
+                    sharedPref.edit().putString("userDetails", gson.toJson(event.userDetails))
+                        .apply()
+                    val mainIntent = Intent(applicationContext, MainActivity::class.java)
+                    startActivity(mainIntent)
+                    finish()
                 }
             }
         })
