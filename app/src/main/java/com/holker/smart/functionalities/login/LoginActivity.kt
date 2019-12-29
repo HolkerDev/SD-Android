@@ -1,15 +1,22 @@
 package com.holker.smart.functionalities.login
 
+import android.content.Context
+import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import com.google.gson.Gson
 import com.holker.smart.R
+import com.holker.smart.SignUpActivity
 import com.holker.smart.databinding.ActivityLoginBinding
 import com.holker.smart.di.Injectable
 import com.holker.smart.di.ViewModelInjectionFactory
+import com.holker.smart.functionalities.main.MainActivity
 import javax.inject.Inject
 
 class LoginActivity : AppCompatActivity(), Injectable {
@@ -17,6 +24,10 @@ class LoginActivity : AppCompatActivity(), Injectable {
 
     private lateinit var binding: ActivityLoginBinding
     private lateinit var viewModel: LoginVM
+    private var sharedPref: SharedPreferences = applicationContext.getSharedPreferences(
+        getString(R.string.preference_key),
+        Context.MODE_PRIVATE
+    )
 
     @Inject
     lateinit var viewModelInjectionFactory: ViewModelInjectionFactory<LoginVM>
@@ -40,9 +51,24 @@ class LoginActivity : AppCompatActivity(), Injectable {
                     ).show()
                 }
                 is LoginState.LoginSuccess -> {
+                    Log.i(TAG, "LoginSuccess. Saving data to shared preference.")
+                    //Save token and userDetails
+                    val gson = Gson()
+                    sharedPref.edit().putString("token", event.token)
+                        .putString("userDetails", gson.toJson(event.userDetails)).apply()
 
+                    val mainIntent = Intent(applicationContext, MainActivity::class.java)
+                    startActivity(mainIntent)
+                    finish()
                 }
-
+                LoginState.SignUp -> {
+                    Log.i(TAG, "SignUp. Switching to SignUp Activity.")
+                    val signUpIntent = Intent(applicationContext, SignUpActivity::class.java)
+                    startActivity(signUpIntent)
+                }
+                else -> {
+                    Log.e(TAG, "Unexpected event.")
+                }
             }
         })
     }

@@ -79,6 +79,9 @@ class StartActivity : AppCompatActivity(), Injectable {
                     startActivity(mainIntent)
                     finish()
                 }
+                else -> {
+                    Log.e(TAG, "Unexpected event.")
+                }
             }
         })
     }

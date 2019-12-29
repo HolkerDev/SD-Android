@@ -6,4 +6,5 @@ sealed class LoginState {
     data class Error(var errorMessage: String) : LoginState()
     object Wait : LoginState()
     data class LoginSuccess(var token: String, var userDetails: UserDetailedInfo) : LoginState()
+    object SignUp : LoginState()
 }

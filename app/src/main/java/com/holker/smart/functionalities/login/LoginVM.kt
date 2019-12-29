@@ -90,4 +90,8 @@ class LoginVM @Inject constructor(var service: SmartAdApiService) : ViewModel() 
 
         })
     }
+
+    fun signUp() {
+        event.value = LoginState.SignUp
+    }
 }
