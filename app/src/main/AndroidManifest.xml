@@ -2,15 +2,19 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.holker.smart">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:name=".SmartAd"
         android:allowBackup="true"
+        android:networkSecurityConfig="@xml/network_security_config"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".functionalities.login.LoginActivity"></activity>
+        <activity android:name=".functionalities.main.MainActivity"></activity>
+        <activity android:name=".functionalities.login.LoginActivity" />
         <activity android:name=".functionalities.start.StartActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
