@@ -5,8 +5,8 @@ import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.holker.smart.data.model.Token
-import com.holker.smart.data.model.UserCredentials
 import com.holker.smart.data.model.UserDetailedInfo
+import com.holker.smart.data.model.UserTokenInfo
 import com.holker.smart.data.repository.SmartAdApiService
 import retrofit2.Call
 import retrofit2.Callback
@@ -26,12 +26,11 @@ class LoginVM @Inject constructor(var service: SmartAdApiService) : ViewModel() 
     }
 
     fun login() {
-        val callCreateToken = service.postCreateToken(
-            UserCredentials(
-                emailObservable.get()!!,
-                passwordObservable.get()!!
-            )
+        val userTokenInfo = UserTokenInfo(
+            emailObservable.get()!!,
+            passwordObservable.get()!!
         )
+        val callCreateToken = service.postCreateToken(userTokenInfo)
         callCreateToken.enqueue(object : Callback<Token> {
             override fun onFailure(call: Call<Token>, t: Throwable) {
                 Log.e(TAG, "Error while creating token. Error : ${t.message}")
@@ -39,6 +38,7 @@ class LoginVM @Inject constructor(var service: SmartAdApiService) : ViewModel() 
             }
 
             override fun onResponse(call: Call<Token>, response: Response<Token>) {
+                Log.i(TAG, response.message())
                 when (response.code()) {
                     400 -> {
                         Log.e(TAG, "Received 400 response. Wrong credentials.")

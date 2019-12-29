@@ -33,7 +33,7 @@
             android:drawablePadding="10dp"
             android:hint="@string/email"
             android:padding="15dp"
-            android:text="@{viewModel.emailObservable}"
+            android:text="@={viewModel.emailObservable}"
             android:textColor="@color/white"
             android:textColorHighlight="@color/white"
             android:textColorHint="@color/white" />
@@ -48,7 +48,7 @@
             android:drawablePadding="10dp"
             android:hint="@string/password"
             android:padding="15dp"
-            android:text="@{viewModel.passwordObservable}"
+            android:text="@={viewModel.passwordObservable}"
             android:textColor="@color/white"
             android:textColorHighlight="@color/white"
             android:textColorHint="@color/white" />
