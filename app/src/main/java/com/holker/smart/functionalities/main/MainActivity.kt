@@ -7,9 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
-import com.google.gson.Gson
 import com.holker.smart.R
-import com.holker.smart.data.model.UserDetailedInfo
 import com.holker.smart.databinding.ActivityMainBinding
 import com.holker.smart.di.Injectable
 import com.holker.smart.di.ViewModelInjectionFactory
@@ -84,11 +82,6 @@ class MainActivity : AppCompatActivity(), Injectable, HasSupportFragmentInjector
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         viewModel = ViewModelProviders.of(this, viewModelInjectionFactory).get(MainVM::class.java)
         binding.viewModel = viewModel
-
-        val gson = Gson()
-        val json: String = _sharedPref.getString("userDetails", "").toString()
-        val obj: UserDetailedInfo =
-            gson.fromJson<UserDetailedInfo>(json, UserDetailedInfo::class.java)
     }
 
 
