@@ -35,6 +35,8 @@ class MainActivity : AppCompatActivity(), Injectable {
             Context.MODE_PRIVATE
         )
 
+
+
         initBinding()
     }
 
@@ -47,8 +49,27 @@ class MainActivity : AppCompatActivity(), Injectable {
         val json: String = _sharedPref.getString("userDetails", "").toString()
         val obj: UserDetailedInfo =
             gson.fromJson<UserDetailedInfo>(json, UserDetailedInfo::class.java)
-        username.setText(obj.name)
-        email.text = obj.email
-        is_staff.text = obj.isStaff.toString()
     }
+
+    private val _onNavigationMenuItemSelectedListener =
+        activity_main_bottom_navigation.setOnNavigationItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.main_menu_advertising -> {
+                    return@setOnNavigationItemSelectedListener true
+                }
+                R.id.main_menu_devices -> {
+                    return@setOnNavigationItemSelectedListener true
+                }
+                R.id.main_menu_profile -> {
+                    return@setOnNavigationItemSelectedListener true
+                }
+                R.id.main_menu_statistic -> {
+                    return@setOnNavigationItemSelectedListener true
+                }
+                else -> {
+                    return@setOnNavigationItemSelectedListener false
+                }
+            }
+
+        }
 }

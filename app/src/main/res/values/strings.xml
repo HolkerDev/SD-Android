@@ -7,4 +7,8 @@
     <string name="email">Email</string>
     <string name="password_confirm">Password confirm</string>
     <string name="username">Username</string>
+    <string name="profile">Profile</string>
+    <string name="statistic">Statistic</string>
+    <string name="devices">Devices</string>
+    <string name="advertising">Advertising</string>
 </resources>
