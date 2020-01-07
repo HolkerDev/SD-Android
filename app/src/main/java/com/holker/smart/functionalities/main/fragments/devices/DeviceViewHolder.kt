@@ -11,6 +11,9 @@ class DeviceViewHolder(
     val inflater: LayoutInflater,
     val parent: ViewGroup
 ) : RecyclerView.ViewHolder(inflater.inflate(R.layout.card_device, parent, false)) {
+
+    private val _TAG = DeviceViewHolder::class.java.name
+
     fun bind(device: OwnDevice) {
         itemView.card_device_name.text = device.name
     }

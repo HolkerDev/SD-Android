@@ -21,5 +21,5 @@ public interface SmartAdApiService {
     fun getOwnDevices(@Header("Authorization") token: String): Call<List<OwnDevice>>
 
     @POST("/api/advertising/devices/")
-    fun postCreateDevice(@Header("Authorization") token: String, @Body name: String): Call<OwnDevice>
+    fun postCreateDevice(@Header("Authorization") token: String, @Body name: DeviceNameRequest): Call<OwnDevice>
 }

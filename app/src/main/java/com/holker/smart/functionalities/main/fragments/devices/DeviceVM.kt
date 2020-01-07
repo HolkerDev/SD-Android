@@ -45,6 +45,7 @@ class DeviceVM @Inject constructor(val service: SmartAdApiService) : ViewModel()
             ) {
                 when (response.code()) {
                     200 -> {
+                        Log.i(_TAG, "List of devices pulled!.Len : ${response.body()!!.size}")
                         event.value = DeviceState.PullDevicesSuccessful(response.body()!!)
                     }
                     401 -> {

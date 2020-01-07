@@ -22,12 +22,14 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center"
-            android:hint="Device name" />
+            android:hint="Device name"
+            android:text="@={viewModel.nameObservable}" />
 
         <Button
-            android:layout_margin="20dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:onClick="@{()->viewModel.submitDevice()}"
             android:text="Submit" />
 
 

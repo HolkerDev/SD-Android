@@ -12,4 +12,5 @@
     <string name="devices">Devices</string>
     <string name="advertising">Advertising</string>
     <string name="permission_to_devices">Sorry, you are not our partner.</string>
+    <string name="close">Close</string>
 </resources>

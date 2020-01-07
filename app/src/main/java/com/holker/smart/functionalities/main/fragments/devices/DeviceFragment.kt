@@ -13,6 +13,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.GridLayoutManager
 import com.google.gson.Gson
 import com.holker.smart.R
 import com.holker.smart.data.model.UserDetailedInfo
@@ -60,14 +61,13 @@ class DeviceFragment : Fragment(), Injectable {
 
         //set up adapter
         _adapter = DeviceListAdapter(listOf())
+        fragment_device_rv_devices.layoutManager = GridLayoutManager(context, 1)
+        fragment_device_rv_devices.adapter = _adapter
+    }
 
-        val token = getToken()
-        if (_viewModel.checkPermission(getUserObject())) {
-            showDeviceList()
-            _viewModel.pullDeviceList(token)
-        } else {
-            showPermissionLabel()
-        }
+    override fun onStart() {
+        super.onStart()
+        updateList()
     }
 
 
@@ -116,12 +116,24 @@ class DeviceFragment : Fragment(), Injectable {
         fragment_device_l_coordinator.visibility = View.INVISIBLE
         fragment_device_iv_permission.visibility = View.VISIBLE
         fragment_device_tv_permission.visibility = View.VISIBLE
+        floatingActionButton.hide()
     }
 
     private fun showDeviceList() {
         fragment_device_l_coordinator.visibility = View.VISIBLE
         fragment_device_iv_permission.visibility = View.INVISIBLE
         fragment_device_tv_permission.visibility = View.INVISIBLE
+        floatingActionButton.show()
+    }
+
+    private fun updateList() {
+        val token = getToken()
+        if (_viewModel.checkPermission(getUserObject())) {
+            showDeviceList()
+            _viewModel.pullDeviceList(token)
+        } else {
+            showPermissionLabel()
+        }
     }
 
 
