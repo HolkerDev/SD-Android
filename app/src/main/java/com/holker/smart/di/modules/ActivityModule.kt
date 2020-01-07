@@ -1,6 +1,7 @@
 package com.holker.smart.di.modules
 
 import com.holker.smart.di.ActivityScope
+import com.holker.smart.functionalities.create_device.CreateDeviceActivity
 import com.holker.smart.functionalities.login.LoginActivity
 import com.holker.smart.functionalities.main.MainActivity
 import com.holker.smart.functionalities.sign_up.SignUpActivity
@@ -26,4 +27,8 @@ abstract class ActivityModule {
     @ActivityScope
     @ContributesAndroidInjector
     abstract fun contributesSignUpActivity(): SignUpActivity
+
+    @ActivityScope
+    @ContributesAndroidInjector
+    abstract fun contributesCreateDeviceActivity(): CreateDeviceActivity
 }

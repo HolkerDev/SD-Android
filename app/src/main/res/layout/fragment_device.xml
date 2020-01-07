@@ -15,15 +15,32 @@
         android:layout_height="match_parent"
         android:background="@color/colorPrimaryDark">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/fragment_device_rv_devices"
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:id="@+id/fragment_device_l_coordinator"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:clipToPadding="false"
-            android:scrollbars="vertical"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_height="match_parent"
+            android:background="@color/colorPrimaryDark">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/fragment_device_rv_devices"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clipToPadding="false"
+                android:scrollbars="vertical" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/floatingActionButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|end"
+                android:layout_marginEnd="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginBottom="80dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="@{()->viewModel.createNewDevice()}"
+                android:src="@drawable/ic_baseline_add_24" />
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
         <LinearLayout
             android:layout_width="wrap_content"

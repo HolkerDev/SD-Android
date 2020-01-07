@@ -20,17 +20,20 @@
             android:id="@+id/activity_main_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-
-            <com.google.android.material.bottomnavigation.BottomNavigationView
-                android:id="@+id/activity_main_bottom_navigation"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:background="@color/colorPrimary"
-                app:itemIconTint="@color/main_activity_menu_selector"
-                app:itemTextColor="@color/white"
-                app:menu="@menu/activity_main_menu" />
         </FrameLayout>
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/activity_main_bottom_navigation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:background="@color/colorPrimary"
+            app:itemIconTint="@color/main_activity_menu_selector"
+            app:itemTextColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="@+id/activity_main_container"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:menu="@menu/activity_main_menu" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

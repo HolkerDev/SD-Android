@@ -22,7 +22,12 @@ class DeviceVM @Inject constructor(val service: SmartAdApiService) : ViewModel()
     }
 
     fun checkPermission(user: UserDetailedInfo): Boolean {
+        Log.i(_TAG, "User details : isStaff == ${user.isStaff}")
         return user.isStaff
+    }
+
+    fun createNewDevice() {
+        event.value = DeviceState.CreateNewDevice
     }
 
     fun pullDeviceList(token: String) {
@@ -38,7 +43,17 @@ class DeviceVM @Inject constructor(val service: SmartAdApiService) : ViewModel()
                 call: Call<List<OwnDevice>>,
                 response: Response<List<OwnDevice>>
             ) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                when (response.code()) {
+                    200 -> {
+                        event.value = DeviceState.PullDevicesSuccessful(response.body()!!)
+                    }
+                    401 -> {
+                        Log.e(_TAG, "Error status code: 401 while pulling device list")
+                    }
+                    else -> {
+                        event.value = DeviceState.Error("Internal error. Contact with admin.")
+                    }
+                }
             }
 
         })
