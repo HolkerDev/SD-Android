@@ -13,7 +13,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".functionalities.sign_up.SignUpActivity"></activity>
+        <activity android:name=".functionalities.create_device.CreateDeviceActivity"></activity>
+        <activity android:name=".functionalities.sign_up.SignUpActivity" />
         <activity android:name=".functionalities.main.MainActivity" />
         <activity android:name=".functionalities.login.LoginActivity" />
         <activity android:name=".functionalities.start.StartActivity">
