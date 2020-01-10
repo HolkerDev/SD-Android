@@ -1,6 +1,7 @@
 package com.holker.smart.di.modules
 
 import com.holker.smart.di.ActivityScope
+import com.holker.smart.functionalities.create_advertising.CreateAdvertisingActivity
 import com.holker.smart.functionalities.create_device.CreateDeviceActivity
 import com.holker.smart.functionalities.login.LoginActivity
 import com.holker.smart.functionalities.main.MainActivity
@@ -31,4 +32,8 @@ abstract class ActivityModule {
     @ActivityScope
     @ContributesAndroidInjector
     abstract fun contributesCreateDeviceActivity(): CreateDeviceActivity
+
+    @ActivityScope
+    @ContributesAndroidInjector
+    abstract fun contributesCreateAdvertisingActivity(): CreateAdvertisingActivity
 }

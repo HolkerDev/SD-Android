@@ -22,4 +22,7 @@ public interface SmartAdApiService {
 
     @POST("/api/advertising/devices/")
     fun postCreateDevice(@Header("Authorization") token: String, @Body name: DeviceNameRequest): Call<OwnDevice>
+
+    @GET("/api/advertising/audiences")
+    fun getAudiences(@Header("Authorization") token: String): Call<List<Audience>>
 }
