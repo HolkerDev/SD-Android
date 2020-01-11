@@ -8,13 +8,109 @@
             type="com.holker.smart.functionalities.create_advertising.CreateAdvertisingVM" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/colorPrimaryDark"
+        android:orientation="vertical">
 
-        tools:context=".functionalities.create_advertising.CreateAdvertisingActivity">
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/et_credentials"
+            android:gravity="center"
+            android:hint="Advertising name"
+            android:inputType="textPersonName"
+            android:padding="15dp"
+            android:text="@={viewModel.nameObservable}"
+            android:textColor="@color/white"
+            android:textColorHighlight="@color/white"
+            android:textColorHint="@color/white" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/activity_create_advertising_rv_devices"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:clipToPadding="false"
+            android:scrollbars="vertical" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/et_credentials"
+            android:gravity="center"
+            android:hint="Duration"
+            android:inputType="numberSigned"
+            android:padding="15dp"
+            android:text="@={viewModel.secondsObservable}"
+            android:textColor="@color/white"
+            android:textColorHighlight="@color/white"
+            android:textColorHint="@color/white" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/activity_create_advertising_rv_audiences"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:clipToPadding="false"
+            android:scrollbars="vertical" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <EditText
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:hint="Start date"
+                android:text="@={viewModel.startDateObservable}"
+                android:textColorHint="@color/white" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="time"
+                android:minWidth="20dp"
+                android:text="@={viewModel.startTimeObservable}"
+                android:textColorHint="@color/white" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <EditText
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:hint="End date"
+                android:text="@={viewModel.endDateObservable}"
+                android:textColorHint="@color/white" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="time"
+                android:text="@={viewModel.endTimeObservable}"
+                android:textColorHint="@color/white" />
+
+        </LinearLayout>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:onClick="@{()->viewModel.uploadImage()}"
+            android:text="Upload image" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:onClick="@{()->viewModel.submitAdvertising()}"
+            android:text="Submit" />
+    </LinearLayout>
 </layout>
