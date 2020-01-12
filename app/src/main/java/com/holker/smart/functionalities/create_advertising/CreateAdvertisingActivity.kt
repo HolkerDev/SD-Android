@@ -7,14 +7,18 @@ import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.GridLayoutManager
 import com.holker.smart.R
 import com.holker.smart.databinding.ActivityCreateAdvertisingBinding
 import com.holker.smart.di.Injectable
 import com.holker.smart.di.ViewModelInjectionFactory
+import com.holker.smart.functionalities.create_advertising.models.AudienceListAdapter
+import kotlinx.android.synthetic.main.activity_create_advertising.*
 import java.io.File
 import javax.inject.Inject
 
@@ -26,6 +30,9 @@ class CreateAdvertisingActivity : AppCompatActivity(), Injectable {
     private lateinit var _viewModel: CreateAdvertisingVM
     private lateinit var _sharedPref: SharedPreferences
 
+    private lateinit var _adapterAudience: AudienceListAdapter
+
+
     @Inject
     lateinit var viewModelInjectionFactory: ViewModelInjectionFactory<CreateAdvertisingVM>
 
@@ -36,6 +43,20 @@ class CreateAdvertisingActivity : AppCompatActivity(), Injectable {
             Context.MODE_PRIVATE
         )
         initBinding()
+
+        //set token
+        val token = _sharedPref.getString("token", "")!!
+
+        _viewModel.token = token
+        //set up adapter
+        _adapterAudience = AudienceListAdapter(listOf())
+        activity_create_advertising_rv_audiences.layoutManager =
+            GridLayoutManager(applicationContext, 1)
+        activity_create_advertising_rv_audiences.adapter = _adapterAudience
+
+        initObservables()
+
+        _viewModel.pullAudienceSelectList()
     }
 
     fun initBinding() {
@@ -44,7 +65,9 @@ class CreateAdvertisingActivity : AppCompatActivity(), Injectable {
             ViewModelProviders.of(this, viewModelInjectionFactory)
                 .get(CreateAdvertisingVM::class.java)
         _binding.viewModel = _viewModel
+    }
 
+    fun initObservables() {
         _viewModel.event.observe(this, Observer { event ->
             when (event) {
                 CreateAdvertisingState.UploadImage -> {
@@ -55,6 +78,12 @@ class CreateAdvertisingActivity : AppCompatActivity(), Injectable {
                     startActivityForResult(intent, 2)
                 }
             }
+        })
+
+        _viewModel.audienceList.observe(this, Observer { list ->
+            Log.i(_TAG, "Apply list to adapter")
+            _adapterAudience.items = list
+            _adapterAudience.notifyDataSetChanged()
         })
     }
 
@@ -75,7 +104,7 @@ class CreateAdvertisingActivity : AppCompatActivity(), Injectable {
             val picturePath = cursor.getString(columnIndex)
             cursor.close()
             val imageFile = File(picturePath)
-            _viewModel.setImage(imageFile)
+            _viewModel.imageFile = imageFile
         }
     }
 

@@ -6,7 +6,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.holker.smart.data.model.AdvertisingCreateInfo
 import com.holker.smart.data.model.AdvertisingCreateResponse
+import com.holker.smart.data.model.Audience
 import com.holker.smart.data.repository.SmartAdApiService
+import com.holker.smart.functionalities.create_advertising.models.AudienceSelect
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -29,8 +31,44 @@ class CreateAdvertisingVM @Inject constructor(val service: SmartAdApiService) : 
     var startTimeObservable = ObservableField<String>("19:35")
     var endTimeObservable = ObservableField<String>("19:35")
 
+    var audienceList = MutableLiveData<ArrayList<AudienceSelect>>()
+
+    init {
+        audienceList.value = arrayListOf()
+    }
+
     fun uploadImage() {
         event.value = CreateAdvertisingState.UploadImage
+    }
+
+    fun pullAudienceSelectList() {
+        val getAudienceSelect = service.getAudiences("Token $token")
+        getAudienceSelect.enqueue(object : Callback<List<Audience>> {
+            override fun onFailure(call: Call<List<Audience>>, t: Throwable) {
+                Log.e(_TAG, "Error while pulling audiences. Error : ${t.message}")
+            }
+
+            override fun onResponse(
+                call: Call<List<Audience>>,
+                response: Response<List<Audience>>
+            ) {
+                when (response.code()) {
+                    200 -> {
+                        val audiences: List<Audience> = response.body()!!
+                        val audienceToAdapter = arrayListOf<AudienceSelect>()
+                        for (audience in audiences) {
+                            Log.i(_TAG, "Add audience to list")
+                            audienceToAdapter.add(AudienceSelect(audience.name))
+                        }
+                        audienceList.value = audienceToAdapter
+                    }
+                    else -> {
+                        Log.e(_TAG, "Wrong code while pulling audiences. Code : ${response.code()}")
+                    }
+                }
+            }
+
+        })
     }
 
 
@@ -51,7 +89,7 @@ class CreateAdvertisingVM @Inject constructor(val service: SmartAdApiService) : 
             )
             postAdvertising.enqueue(object : Callback<AdvertisingCreateResponse> {
                 override fun onFailure(call: Call<AdvertisingCreateResponse>, t: Throwable) {
-                    Log.e(_TAG, "Error while ")
+                    Log.e(_TAG, "Error while creating Advertising. Error : ${t.message}")
                 }
 
                 override fun onResponse(
