@@ -26,4 +26,7 @@ public interface SmartAdApiService {
     @Multipart
     @POST("api/advertising/advertising")
     fun postAdvertising(@Header("Authorization") token: String, @Body advertisingCreateInfo: AdvertisingCreateInfo): Call<AdvertisingCreateResponse>
+
+    @GET("api/advertising/devices-all")
+    fun getAllDevices(@Header("Authorization") token: String): Call<List<ResponseDeviceAll>>
 }

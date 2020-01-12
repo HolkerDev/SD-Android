@@ -7,8 +7,10 @@ import androidx.lifecycle.ViewModel
 import com.holker.smart.data.model.AdvertisingCreateInfo
 import com.holker.smart.data.model.AdvertisingCreateResponse
 import com.holker.smart.data.model.Audience
+import com.holker.smart.data.model.ResponseDeviceAll
 import com.holker.smart.data.repository.SmartAdApiService
 import com.holker.smart.functionalities.create_advertising.models.AudienceSelect
+import com.holker.smart.functionalities.create_advertising.models.DeviceSelect
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -32,6 +34,7 @@ class CreateAdvertisingVM @Inject constructor(val service: SmartAdApiService) : 
     var endTimeObservable = ObservableField<String>("19:35")
 
     var audienceList = MutableLiveData<ArrayList<AudienceSelect>>()
+    var devicesList = MutableLiveData<ArrayList<DeviceSelect>>()
 
     init {
         audienceList.value = arrayListOf()
@@ -67,6 +70,39 @@ class CreateAdvertisingVM @Inject constructor(val service: SmartAdApiService) : 
                     }
                 }
             }
+        })
+    }
+
+    fun pullDeviceSelectList() {
+        val getAllDevices = service.getAllDevices("Token $token")
+        getAllDevices.enqueue(object : Callback<List<ResponseDeviceAll>> {
+            override fun onFailure(call: Call<List<ResponseDeviceAll>>, t: Throwable) {
+                Log.e(_TAG, "Error while pulling devices. Error : ${t.message}")
+            }
+
+            override fun onResponse(
+                call: Call<List<ResponseDeviceAll>>,
+                response: Response<List<ResponseDeviceAll>>
+            ) {
+                when (response.code()) {
+                    200 -> {
+                        val prepareList = arrayListOf<DeviceSelect>()
+                        for (device in response.body()!!) {
+                            prepareList.add(DeviceSelect(device.name))
+                        }
+                        devicesList.value = prepareList
+                    }
+                    else -> {
+                        Log.e(
+                            _TAG,
+                            "Unhandled status code while pulling devices. Code : ${response.code()}"
+                        )
+                        event.value =
+                            CreateAdvertisingState.Error("Server error. Please try later.")
+                    }
+                }
+            }
+
         })
     }
 

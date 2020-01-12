@@ -18,6 +18,7 @@ import com.holker.smart.databinding.ActivityCreateAdvertisingBinding
 import com.holker.smart.di.Injectable
 import com.holker.smart.di.ViewModelInjectionFactory
 import com.holker.smart.functionalities.create_advertising.models.AudienceListAdapter
+import com.holker.smart.functionalities.create_advertising.models.DeviceSelectListAdapter
 import kotlinx.android.synthetic.main.activity_create_advertising.*
 import java.io.File
 import javax.inject.Inject
@@ -31,6 +32,7 @@ class CreateAdvertisingActivity : AppCompatActivity(), Injectable {
     private lateinit var _sharedPref: SharedPreferences
 
     private lateinit var _adapterAudience: AudienceListAdapter
+    private lateinit var _adapterDevices: DeviceSelectListAdapter
 
 
     @Inject
@@ -48,15 +50,27 @@ class CreateAdvertisingActivity : AppCompatActivity(), Injectable {
         val token = _sharedPref.getString("token", "")!!
 
         _viewModel.token = token
-        //set up adapter
+
+        //set up adapters
         _adapterAudience = AudienceListAdapter(listOf())
+
         activity_create_advertising_rv_audiences.layoutManager =
             GridLayoutManager(applicationContext, 1)
+
         activity_create_advertising_rv_audiences.adapter = _adapterAudience
+
+        _adapterDevices = DeviceSelectListAdapter(listOf())
+
+        activity_create_advertising_rv_devices.layoutManager =
+            GridLayoutManager(applicationContext, 1)
+
+        activity_create_advertising_rv_devices.adapter = _adapterDevices
+
 
         initObservables()
 
         _viewModel.pullAudienceSelectList()
+        _viewModel.pullDeviceSelectList()
     }
 
     fun initBinding() {
@@ -84,6 +98,11 @@ class CreateAdvertisingActivity : AppCompatActivity(), Injectable {
             Log.i(_TAG, "Apply list to adapter")
             _adapterAudience.items = list
             _adapterAudience.notifyDataSetChanged()
+        })
+
+        _viewModel.devicesList.observe(this, Observer { list ->
+            _adapterDevices.items = list
+            _adapterDevices.notifyDataSetChanged()
         })
     }
 
