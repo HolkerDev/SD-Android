@@ -1,6 +1,5 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/card_device_ll_main"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
@@ -14,11 +13,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center|top"
-            android:background="@color/colorAccent"
-            android:orientation="vertical">
+            android:background="@color/colorPrimary"
+            android:orientation="horizontal">
+
+            <CheckBox
+                android:id="@+id/card_device_select_checkbox"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent" />
 
             <TextView
-                android:id="@+id/card_device_name"
+                android:id="@+id/card_device_select_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
@@ -26,6 +30,8 @@
                 android:textColor="#ffff"
                 android:textSize="25sp"
                 android:textStyle="bold" />
+
+
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>

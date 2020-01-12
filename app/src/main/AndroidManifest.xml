@@ -3,6 +3,8 @@
     package="com.holker.smart">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:name=".SmartAd"
@@ -10,10 +12,12 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:networkSecurityConfig="@xml/network_security_config"
+        android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".functionalities.create_device.CreateDeviceActivity"></activity>
+        <activity android:name=".functionalities.create_advertising.CreateAdvertisingActivity"></activity>
+        <activity android:name=".functionalities.create_device.CreateDeviceActivity" />
         <activity android:name=".functionalities.sign_up.SignUpActivity" />
         <activity android:name=".functionalities.main.MainActivity" />
         <activity android:name=".functionalities.login.LoginActivity" />
