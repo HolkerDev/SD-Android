@@ -67,7 +67,6 @@ class CreateAdvertisingVM @Inject constructor(val service: SmartAdApiService) : 
                     }
                 }
             }
-
         })
     }
 
