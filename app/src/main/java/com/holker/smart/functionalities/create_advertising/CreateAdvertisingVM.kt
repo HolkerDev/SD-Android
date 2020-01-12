@@ -5,7 +5,6 @@ import android.util.Log
 import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.holker.smart.data.model.AdvertisingCreateInfo
 import com.holker.smart.data.model.AdvertisingCreateResponse
 import com.holker.smart.data.model.Audience
 import com.holker.smart.data.model.ResponseDeviceAll
@@ -32,7 +31,7 @@ class CreateAdvertisingVM @Inject constructor(val service: SmartAdApiService) : 
     lateinit var token: String
     lateinit var imagePartData: MultipartBody.Part
 
-    var nameObservable = ObservableField<String>("testName")
+    var nameObservable = ObservableField<String>("testNameAndroid")
     var secondsObservable = ObservableField<String>("15")
     var startDateObservable = ObservableField<String>("2020-01-10")
     var endDateObservable = ObservableField<String>("2020-01-15")
@@ -125,15 +124,15 @@ class CreateAdvertisingVM @Inject constructor(val service: SmartAdApiService) : 
 //            val seconds = secondsObservable.get()!!.toInt()
 //            val startDate = parseDate(startDateObservable.get()!!, startTimeObservable.get()!!)
 //            val endDate = parseDate(endDateObservable.get()!!, endTimeObservable.get()!!)
-            val devices = arrayListOf<String>()
-            val audiences = arrayListOf<String>()
+            val devices: ArrayList<MultipartBody.Part> = arrayListOf()
+            val audiences: ArrayList<MultipartBody.Part> = arrayListOf()
 
             for (device in devicesList.value!!) {
-                devices.add(device.id)
+                devices.add(MultipartBody.Part.createFormData("devices", device.id))
             }
 
             for (audience in audienceList.value!!) {
-                audiences.add(audience.id)
+                audiences.add(MultipartBody.Part.createFormData("audiences", audience.id))
             }
 
             val map = hashMapOf<String, RequestBody>()
@@ -152,6 +151,8 @@ class CreateAdvertisingVM @Inject constructor(val service: SmartAdApiService) : 
                 )
             )
 
+//            List<MultipartBody.Part> descriptionList = new ArrayList<>();
+//            descriptionList.add(MultipartBody.Part.createFormData("param_name_here", values));
 
             val postAdvertising = service.postAdvertisingMultipart(
                 "Token $token",
@@ -181,7 +182,6 @@ class CreateAdvertisingVM @Inject constructor(val service: SmartAdApiService) : 
                         }
                     }
                 }
-
             })
         }
     }

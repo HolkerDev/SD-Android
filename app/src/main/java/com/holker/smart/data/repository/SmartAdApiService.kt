@@ -25,19 +25,13 @@ public interface SmartAdApiService {
     fun getAudiences(@Header("Authorization") token: String): Call<List<Audience>>
 
     @Multipart
-    @POST("api/advertising/advertising")
-    fun postAdvertising(
-        @Header("Authorization") token: String,
-        @Body advertisingCreateInfo: AdvertisingCreateInfo
-    ): Call<AdvertisingCreateResponse>
-    @Multipart
     @POST("api/advertising/advertising/")
     fun postAdvertisingMultipart(
         @Header("Authorization") token: String,
         @PartMap partMap: MutableMap<String, RequestBody>,
-        @Part file: MultipartBody.Part,
-        @Part("audiences[]") audiences: ArrayList<String>,
-        @Part("devices[]") devices: ArrayList<String>
+        @Part image: MultipartBody.Part,
+        @Part audiences: ArrayList<MultipartBody.Part>,
+        @Part devices: ArrayList<MultipartBody.Part>
     ): Call<AdvertisingCreateResponse>
 
     @GET("api/advertising/devices-all")

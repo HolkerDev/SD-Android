@@ -158,7 +158,7 @@ class CreateAdvertisingActivity : AppCompatActivity(), Injectable {
                 imageFile
             )
             val imageMultiPartFormat =
-                MultipartBody.Part.createFormData("advertising", imageFile.name, requestFile);
+                MultipartBody.Part.createFormData("image", imageFile.name, requestFile);
 
             _viewModel.imageFile = imageFile
             _viewModel.imageUri = selectedImage
