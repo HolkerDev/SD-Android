@@ -1,13 +1,17 @@
 package com.holker.smart.functionalities.create_advertising
 
+import android.Manifest
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -20,6 +24,9 @@ import com.holker.smart.di.ViewModelInjectionFactory
 import com.holker.smart.functionalities.create_advertising.models.AudienceListAdapter
 import com.holker.smart.functionalities.create_advertising.models.DeviceSelectListAdapter
 import kotlinx.android.synthetic.main.activity_create_advertising.*
+import okhttp3.MediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import java.io.File
 import javax.inject.Inject
 
@@ -85,11 +92,33 @@ class CreateAdvertisingActivity : AppCompatActivity(), Injectable {
         _viewModel.event.observe(this, Observer { event ->
             when (event) {
                 CreateAdvertisingState.UploadImage -> {
+                    if (if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                            checkSelfPermission(
+                                Manifest.permission.READ_EXTERNAL_STORAGE
+                            ) != PackageManager.PERMISSION_GRANTED
+                        } else {
+                            TODO("VERSION.SDK_INT < M")
+                        }
+                    ) {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                            requestPermissions(
+                                arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
+                                3
+                            )
+                        }
+                    }
                     val intent = Intent(
                         Intent.ACTION_PICK,
                         MediaStore.Images.Media.EXTERNAL_CONTENT_URI
                     )
                     startActivityForResult(intent, 2)
+                }
+                CreateAdvertisingState.CreatedSuccessful -> {
+                    finish()
+                }
+                is CreateAdvertisingState.Error -> {
+                    Toast.makeText(applicationContext, event.errorMessage, Toast.LENGTH_SHORT)
+                        .show()
                 }
             }
         })
@@ -123,7 +152,17 @@ class CreateAdvertisingActivity : AppCompatActivity(), Injectable {
             val picturePath = cursor.getString(columnIndex)
             cursor.close()
             val imageFile = File(picturePath)
+
+            val requestFile = RequestBody.create(
+                MediaType.parse(contentResolver.getType(selectedImage)!!),
+                imageFile
+            )
+            val imageMultiPartFormat =
+                MultipartBody.Part.createFormData("advertising", imageFile.name, requestFile);
+
             _viewModel.imageFile = imageFile
+            _viewModel.imageUri = selectedImage
+            _viewModel.imagePartData = imageMultiPartFormat
         }
     }
 

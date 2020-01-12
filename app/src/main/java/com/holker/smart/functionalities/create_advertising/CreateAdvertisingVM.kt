@@ -1,5 +1,6 @@
 package com.holker.smart.functionalities.create_advertising
 
+import android.net.Uri
 import android.util.Log
 import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
@@ -11,11 +12,14 @@ import com.holker.smart.data.model.ResponseDeviceAll
 import com.holker.smart.data.repository.SmartAdApiService
 import com.holker.smart.functionalities.create_advertising.models.AudienceSelect
 import com.holker.smart.functionalities.create_advertising.models.DeviceSelect
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.io.File
 import javax.inject.Inject
+
 
 class CreateAdvertisingVM @Inject constructor(val service: SmartAdApiService) : ViewModel() {
 
@@ -24,7 +28,9 @@ class CreateAdvertisingVM @Inject constructor(val service: SmartAdApiService) : 
     var event = MutableLiveData<CreateAdvertisingState>()
 
     lateinit var imageFile: File
+    lateinit var imageUri: Uri
     lateinit var token: String
+    lateinit var imagePartData: MultipartBody.Part
 
     var nameObservable = ObservableField<String>("testName")
     var secondsObservable = ObservableField<String>("15")
@@ -61,7 +67,12 @@ class CreateAdvertisingVM @Inject constructor(val service: SmartAdApiService) : 
                         val audienceToAdapter = arrayListOf<AudienceSelect>()
                         for (audience in audiences) {
                             Log.i(_TAG, "Add audience to list")
-                            audienceToAdapter.add(AudienceSelect(audience.name))
+                            audienceToAdapter.add(
+                                AudienceSelect(
+                                    audience.name,
+                                    audience.id.toString()
+                                )
+                            )
                         }
                         audienceList.value = audienceToAdapter
                     }
@@ -88,7 +99,7 @@ class CreateAdvertisingVM @Inject constructor(val service: SmartAdApiService) : 
                     200 -> {
                         val prepareList = arrayListOf<DeviceSelect>()
                         for (device in response.body()!!) {
-                            prepareList.add(DeviceSelect(device.name))
+                            prepareList.add(DeviceSelect(device.name, device.id))
                         }
                         devicesList.value = prepareList
                     }
@@ -106,21 +117,48 @@ class CreateAdvertisingVM @Inject constructor(val service: SmartAdApiService) : 
         })
     }
 
-
     fun submitAdvertising() {
         if (!checkImage()) {
             event.value = CreateAdvertisingState.Error("Image was not selected")
         } else {
-            val name = nameObservable.get()!!
-            val seconds = secondsObservable.get()!!.toInt()
-            val startDate = parseDate(startDateObservable.get()!!, startTimeObservable.get()!!)
-            val endDate = parseDate(endDateObservable.get()!!, endDateObservable.get()!!)
+//            val name = nameObservable.get()!!
+//            val seconds = secondsObservable.get()!!.toInt()
+//            val startDate = parseDate(startDateObservable.get()!!, startTimeObservable.get()!!)
+//            val endDate = parseDate(endDateObservable.get()!!, endTimeObservable.get()!!)
             val devices = arrayListOf<String>()
             val audiences = arrayListOf<String>()
-            val postAdvertising = service.postAdvertising(
-                "Token $token", AdvertisingCreateInfo(
-                    name, imageFile, seconds, startDate, endDate, audiences, devices
+
+            for (device in devicesList.value!!) {
+                devices.add(device.id)
+            }
+
+            for (audience in audienceList.value!!) {
+                audiences.add(audience.id)
+            }
+
+            val map = hashMapOf<String, RequestBody>()
+            map["name"] = createPartFromString(nameObservable.get()!!)
+            map["seconds"] = createPartFromString(secondsObservable.get()!!)
+            map["fromDate"] = createPartFromString(
+                parseDate(
+                    startDateObservable.get()!!,
+                    startTimeObservable.get()!!
                 )
+            )
+            map["toDate"] = createPartFromString(
+                parseDate(
+                    endDateObservable.get()!!,
+                    endTimeObservable.get()!!
+                )
+            )
+
+
+            val postAdvertising = service.postAdvertisingMultipart(
+                "Token $token",
+                map,
+                imagePartData,
+                audiences,
+                devices
             )
             postAdvertising.enqueue(object : Callback<AdvertisingCreateResponse> {
                 override fun onFailure(call: Call<AdvertisingCreateResponse>, t: Throwable) {
@@ -157,10 +195,16 @@ class CreateAdvertisingVM @Inject constructor(val service: SmartAdApiService) : 
         val year = dateParts[0]
         val month = dateParts[1]
         val day = dateParts[2]
+        Log.i(_TAG, stringTime)
         val timeParts = stringTime.split(":")
+        Log.i(_TAG, "Time parts : ${timeParts}")
         val hours = timeParts[0]
         val minutes = timeParts[1]
         // example 2020-01-15T19:35:21.572483Z
         return "$year-$month-${day}T$hours:$minutes:00.000000"
+    }
+
+    private fun createPartFromString(string: String): RequestBody {
+        return RequestBody.create(MultipartBody.FORM, string)
     }
 }

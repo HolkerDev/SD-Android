@@ -3,6 +3,7 @@ package com.holker.smart.functionalities.create_advertising.models
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.CheckBox
 import androidx.recyclerview.widget.RecyclerView
 import com.holker.smart.R
 import kotlinx.android.synthetic.main.card_audience_select.view.*
@@ -17,5 +18,11 @@ class AudienceViewHolder(
     fun bind(audienceSelect: AudienceSelect) {
         Log.i(_TAG, "Audience was bind")
         itemView.card_audience_select_name.text = audienceSelect.name
+
+        itemView.card_audience_select_checkbox.setOnClickListener { view ->
+            if (view is CheckBox) {
+                audienceSelect.isSelected = view.isChecked
+            }
+        }
     }
 }

@@ -3,6 +3,7 @@ package com.holker.smart.functionalities.create_advertising.models
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.CheckBox
 import androidx.recyclerview.widget.RecyclerView
 import com.holker.smart.R
 import kotlinx.android.synthetic.main.card_device_select.view.*
@@ -17,5 +18,11 @@ class DeviceSelectViewHolder(
     fun bind(deviceSelect: DeviceSelect) {
         Log.i(_TAG, "Device was bind")
         itemView.card_device_select_name.text = deviceSelect.name
+
+        itemView.card_device_select_checkbox.setOnClickListener { view ->
+            if (view is CheckBox) {
+                deviceSelect.isSelected = view.isSelected
+            }
+        }
     }
 }

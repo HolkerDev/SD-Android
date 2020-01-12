@@ -1,9 +1,10 @@
 package com.holker.smart.data.repository
 
 import com.holker.smart.data.model.*
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.http.*
-
 public interface SmartAdApiService {
     @POST("/api/user/create/")
     fun postCreateUser(@Body userCreate: CreateUserBody): Call<UserCredentials>
@@ -25,7 +26,19 @@ public interface SmartAdApiService {
 
     @Multipart
     @POST("api/advertising/advertising")
-    fun postAdvertising(@Header("Authorization") token: String, @Body advertisingCreateInfo: AdvertisingCreateInfo): Call<AdvertisingCreateResponse>
+    fun postAdvertising(
+        @Header("Authorization") token: String,
+        @Body advertisingCreateInfo: AdvertisingCreateInfo
+    ): Call<AdvertisingCreateResponse>
+    @Multipart
+    @POST("api/advertising/advertising/")
+    fun postAdvertisingMultipart(
+        @Header("Authorization") token: String,
+        @PartMap partMap: MutableMap<String, RequestBody>,
+        @Part file: MultipartBody.Part,
+        @Part("audiences[]") audiences: ArrayList<String>,
+        @Part("devices[]") devices: ArrayList<String>
+    ): Call<AdvertisingCreateResponse>
 
     @GET("api/advertising/devices-all")
     fun getAllDevices(@Header("Authorization") token: String): Call<List<ResponseDeviceAll>>
