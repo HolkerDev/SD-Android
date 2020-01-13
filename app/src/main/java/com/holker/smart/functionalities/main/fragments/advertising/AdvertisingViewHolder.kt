@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.holker.smart.R
 import com.holker.smart.data.model.OwnAdvertising
+import kotlinx.android.synthetic.main.card_advertising.view.*
 
 class AdvertisingViewHolder(
     val inflater: LayoutInflater,
@@ -14,6 +15,6 @@ class AdvertisingViewHolder(
     private val _TAG = AdvertisingViewHolder::class.java.name
 
     fun bind(advertising: OwnAdvertising) {
-        //TODO: Implement bind
+        itemView.card_advertising_name.text = advertising.name
     }
 }
