@@ -24,5 +24,16 @@ class DeviceSelectViewHolder(
                 deviceSelect.isSelected = view.isSelected
             }
         }
+
+        // possibility to select device by clicking to card
+        itemView.card_device_select_name.setOnClickListener { view ->
+            if (itemView.card_device_select_checkbox.isChecked) {
+                itemView.card_device_select_checkbox.isChecked = false
+                deviceSelect.isSelected = false
+            } else {
+                itemView.card_device_select_checkbox.isChecked = true
+                deviceSelect.isSelected = true
+            }
+        }
     }
 }

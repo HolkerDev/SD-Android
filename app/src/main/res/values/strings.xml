@@ -13,4 +13,6 @@
     <string name="advertising">Advertising</string>
     <string name="permission_to_devices">Sorry, you are not our partner.</string>
     <string name="close">Close</string>
+    <string name="create_station">Create station</string>
+    <string name="device_name">Device name</string>
 </resources>

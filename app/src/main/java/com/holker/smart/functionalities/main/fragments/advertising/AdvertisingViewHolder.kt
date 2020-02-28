@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.holker.smart.R
 import com.holker.smart.data.model.OwnAdvertising
+import com.holker.smart.utils.ConvertUtils
 import kotlinx.android.synthetic.main.card_advertising.view.*
 
 class AdvertisingViewHolder(
@@ -16,5 +17,8 @@ class AdvertisingViewHolder(
 
     fun bind(advertising: OwnAdvertising) {
         itemView.card_advertising_name.text = advertising.name
+        val dateString = ConvertUtils.dateToDateString(advertising.toDate)
+        val timeString = ConvertUtils.dateToTimeString(advertising.toDate)
+        itemView.card_advertising_time.text = "$dateString | $timeString"
     }
 }

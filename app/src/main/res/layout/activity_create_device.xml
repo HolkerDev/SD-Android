@@ -13,23 +13,45 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/colorPrimaryDark"
         android:gravity="center"
         android:orientation="vertical"
         tools:context=".functionalities.create_device.CreateDeviceActivity">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="50dp"
+            android:layout_marginBottom="50dp"
+            android:fontFamily="@font/merienda"
+            android:text="@string/create_station"
+            android:textColor="@color/white"
+            android:textSize="50sp" />
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:gravity="center"
-            android:hint="Device name"
-            android:text="@={viewModel.nameObservable}" />
+            android:layout_margin="10dp"
+            android:background="@drawable/et_credentials"
+            android:drawableStart="@drawable/ic_baseline_devices_24"
+            android:drawableLeft="@drawable/ic_baseline_devices_24"
+            android:drawablePadding="10dp"
+            android:hint="@string/device_name"
+            android:padding="15dp"
+            android:text="@={viewModel.nameObservable}"
+            android:textColor="@color/white"
+            android:textColorHighlight="@color/white"
+            android:textColorHint="@color/white" />
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
+            android:background="@drawable/btn_login"
             android:onClick="@{()->viewModel.submitDevice()}"
+            android:shadowColor="@android:color/transparent"
             android:text="Submit" />
 
 
