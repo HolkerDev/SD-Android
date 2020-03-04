@@ -18,15 +18,19 @@
             android:orientation="vertical">
 
             <TextView
+                android:layout_marginStart="10dp"
+                android:drawableStart="@drawable/ic_baseline_devices_24"
+                android:drawableLeft="@drawable/ic_baseline_devices_24"
                 android:id="@+id/card_device_name"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:gravity="center"
-                android:text="Name"
+                android:text="Device name"
                 android:fontFamily="@font/lato"
                 android:textColor="#ffff"
                 android:textSize="25sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:layout_marginLeft="10dp" />
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>
