@@ -17,4 +17,5 @@
     <string name="device_name">Device name</string>
     <string name="create_ad">Create ad</string>
     <string name="ad_name">Ad name</string>
+    <string name="log_out">Log out</string>
 </resources>
