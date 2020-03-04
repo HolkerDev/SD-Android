@@ -5,6 +5,7 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.http.*
+
 public interface SmartAdApiService {
     @POST("/api/user/create/")
     fun postCreateUser(@Body userCreate: CreateUserBody): Call<UserCredentials>
@@ -36,4 +37,7 @@ public interface SmartAdApiService {
 
     @GET("api/advertising/devices-all")
     fun getAllDevices(@Header("Authorization") token: String): Call<List<ResponseDeviceAll>>
+
+    @GET("api/advertising/advertising")
+    fun getAdvertising(@Header("Authorization") token: String): Call<List<OwnAdvertising>>
 }

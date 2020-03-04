@@ -54,12 +54,17 @@ class AdvertisingFragment : Fragment(), Injectable {
             Context.MODE_PRIVATE
         )
 
-        initBinding()
+        _viewModel.token = _sharedPref.getString("token", "")!!
 
         //set up adapter
         _adapter = AdvertisingListAdapter(listOf())
-        fragment_advertising_rv_devices.layoutManager = GridLayoutManager(context, 1)
-        fragment_advertising_rv_devices.adapter = _adapter
+        fragment_advertising_rv_advertising.layoutManager = GridLayoutManager(context, 1)
+        fragment_advertising_rv_advertising.adapter = _adapter
+
+        initBinding()
+
+        _viewModel.pullAdvertising()
+
     }
 
     private fun initBinding() {
@@ -73,6 +78,11 @@ class AdvertisingFragment : Fragment(), Injectable {
                     startActivity(createAdvertisingIntent)
                 }
             }
+        })
+
+        _viewModel.advertisingList.observe(this, Observer { items ->
+            _adapter.items = items
+            _adapter.notifyDataSetChanged()
         })
     }
 }

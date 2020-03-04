@@ -31,8 +31,8 @@ class CreateAdvertisingVM @Inject constructor(val service: SmartAdApiService) : 
     lateinit var token: String
     lateinit var imagePartData: MultipartBody.Part
 
-    var nameObservable = ObservableField<String>("testNameAndroid")
-    var secondsObservable = ObservableField<String>("15")
+    var nameObservable = ObservableField<String>()
+    var secondsObservable = ObservableField<String>()
     var startDateObservable = ObservableField<String>("2020-01-10")
     var endDateObservable = ObservableField<String>("2020-01-15")
     var startTimeObservable = ObservableField<String>("19:35")

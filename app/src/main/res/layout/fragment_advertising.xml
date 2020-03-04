@@ -21,7 +21,7 @@
             android:background="@color/colorPrimaryDark">
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/fragment_advertising_rv_devices"
+                android:id="@+id/fragment_advertising_rv_advertising"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:clipToPadding="false"

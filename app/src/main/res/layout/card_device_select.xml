@@ -7,9 +7,10 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:cardCornerRadius="25dp">
+        app:cardCornerRadius="10dp">
 
         <LinearLayout
+            android:id="@+id/card_device_select_ll_main"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center|top"
@@ -19,12 +20,13 @@
             <CheckBox
                 android:id="@+id/card_device_select_checkbox"
                 android:layout_width="wrap_content"
+                android:layout_marginLeft="10dp"
                 android:layout_height="match_parent" />
 
             <TextView
                 android:id="@+id/card_device_select_name"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="50dp"
                 android:gravity="center"
                 android:text="Name"
                 android:textColor="#ffff"
